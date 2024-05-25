@@ -1,0 +1,8 @@
+spring.cloud.gateway:
+  routes: 
+  - id: webhook-test 
+    uri: lb://webhook
+    predicates:
+    - Path=/webhook/**   
+    filters:
+    - RewritePath=/webhook/(?<uri>.*), /${uri} 
