@@ -6,6 +6,7 @@ import com.example.userservice.repository.UserRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,13 +15,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        userDto.setKeyInfo(UUID.randomUUID().toString(), "encrypted_password");
+        userDto.setKeyInfo(UUID.randomUUID().toString(), bCryptPasswordEncoder.encode(userDto.getPassword()));
 
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userRepository.save(userEntity);
-        return null;
+        return modelMapper.map(userEntity,UserDto.class);
     }
 }

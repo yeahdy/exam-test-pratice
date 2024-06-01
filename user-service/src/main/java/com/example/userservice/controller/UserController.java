@@ -1,9 +1,11 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.common.response.ResponseMessage;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
 import com.example.userservice.vo.RequestUser;
+import com.example.userservice.vo.ResponseUser;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +33,12 @@ public class UserController {
         return greeting.getMessage();
     }
 
-    @PostMapping("/user")
-    public String createUser(@RequestBody RequestUser user){
+    @PostMapping("user")
+    public ResponseMessage<ResponseUser> createUser(@RequestBody RequestUser user){
         UserDto userDto = modelMapper.map(user, UserDto.class);
-        userService.createUser(userDto);
-        return "I have successfully registered";
+        UserDto createdUser  = userService.createUser(userDto);
+        ResponseUser responseUser = modelMapper.map(createdUser,ResponseUser.class);
+        return ResponseMessage.createSuccess(responseUser);
     }
 
 }
