@@ -6,6 +6,7 @@ import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
 import com.example.userservice.vo.RequestUser;
 import com.example.userservice.vo.ResponseUser;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseMessage<ResponseUser> createUser(@RequestBody RequestUser user) {
+    public ResponseMessage<ResponseUser> createUser(@RequestBody @Valid RequestUser user) {
         UserDto userDto = modelMapper.map(user, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
         ResponseUser responseUser = modelMapper.map(createdUser, ResponseUser.class);

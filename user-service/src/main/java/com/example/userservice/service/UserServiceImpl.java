@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null){
-            new NullPointerException("");
+            throw new NullPointerException("Not found user");
         }
         UserDto userDto = modelMapper.map(userEntity,UserDto.class);
         List<ResponseOrder> orders = new ArrayList<>();
