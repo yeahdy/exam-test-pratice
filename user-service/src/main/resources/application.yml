@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: user-service
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(uEbqEYsvcO6g+Nv/pR91tggoYY5R0swYVHbMYWxUxUiUBmHRB/t3YtYdhye7G6a4jdu+zXnXSYCITNauVI7Dq7SRGuR2SXpaZTpJ2QzLaaX9i8fjyeQvYsMwuZZpbPREOJUC4ruNVPMcBTQBwZ7nNZMw5/ABdkzm2Z3Y4QThTeE=)
+    username: ENC(BHmzH6N1SF+8i28j1sGPGr/5CLXsirLLLobj6Y0EeabsvuBZ9PUntRr4A/MNwHce)
+    password: ENC(amiQL2z0fbPr5ivcMingFGTFPPbEcvVWbwR4yA5ZV8/mCxWB/uZW/yrB21NSmOxY)
   jpa:
     database: mysql
     hibernate.ddl-auto: update
@@ -29,3 +34,8 @@ eureka:
 
 greeting:
   message: Welcome to user-info E-commerce
+
+jasypt:
+  encryptor:
+    password: ${jasypt-key}
+    bean: jasyptEncryptor
