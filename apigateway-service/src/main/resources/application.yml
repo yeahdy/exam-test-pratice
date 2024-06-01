@@ -13,8 +13,15 @@ spring:
             preLogger: true
             postLogger: true
       routes:
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/**
+
           - id: first-service
             ## 사용자 요청 시 api gateway에서 predicates가 uri에 붙어서 http://localhost:8081/first-service/** 형태로 전달
+            ## localhost:8082 와 같은 port 번호말고 Eureka에 네이밍된 로드밸런스(application의 name)로 포워딩가능
+            ## lb 디스커버리 서비스 안에 있는 인스턴스를 찾는 명령어
             uri: lb://MY-FIRST-SERVICE
             predicates: ## 조건절. 사용자가 Path 정보 입력 시 uri로 이동된다.
               - Path=/first-service/**
@@ -22,9 +29,8 @@ spring:
 #              - AddRequestHeader=first-request, first-request-header-value
 #              - AddResponseHeader=first-response, first-response-header-value
               - CustomFilter
+
           - id: second-service
-            ## localhost:8082 와 같은 port 번호말고 Eureka에 네이밍된 이름(application의 name)으로 포워딩가능
-            ## lb 디스커버리 서비스 안에 있는 인스턴스를 찾는 명령어
             uri: lb://MY-SECOND-SERVICE
             predicates:
               - Path=/second-service/**
