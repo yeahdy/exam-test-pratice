@@ -18,6 +18,11 @@ spring:
             predicates:
               - Path=/user-service/**
 
+          - id: book-catalog-service
+            uri: lb://BOOK-CATALOG-SERVICE
+            predicates:
+              - Path=/book-catalog-service/**
+
           - id: first-service
             ## 사용자 요청 시 api gateway에서 predicates가 uri에 붙어서 http://localhost:8081/first-service/** 형태로 전달
             ## localhost:8082 와 같은 port 번호말고 Eureka에 네이밍된 로드밸런스(application의 name)로 포워딩가능
