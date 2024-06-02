@@ -17,6 +17,29 @@ spring:
             uri: lb://USER-SERVICE
             predicates:
               - Path=/user-service/**
+              - Method=GET
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              ## predicates에 uri 정보를 명시하면 데이터 하나에 대해서만 조건추가 가능
+              - Path=/user-service/login
+              - Method=POST
+            filters:
+              ## 로그인 시 매 요청마다 초기화
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/user
+              - Method=POST
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
           - id: book-catalog-service
             uri: lb://BOOK-CATALOG-SERVICE
             predicates:
