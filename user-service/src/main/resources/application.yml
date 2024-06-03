@@ -39,3 +39,12 @@ jasypt:
   encryptor:
     password: ${jasypt-key}
     bean: jasyptEncryptor
+
+logging:
+  level:
+    root: debug
+
+jwt:
+  token:
+    expiration_time: 86400000
+    secret: thesecretkeyvalueofjwtmustbegreaterthan256bits
