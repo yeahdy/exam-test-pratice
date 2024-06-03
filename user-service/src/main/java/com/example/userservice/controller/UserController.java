@@ -29,10 +29,18 @@ public class UserController {
     private final ModelMapper modelMapper;
     @Value("${server.port}")
     private String port;
+    @Value("${jwt.token.expiration_time}")
+    private String expirationTime;
+    @Value("${jwt.token.secret}")
+    private String secret;
 
     @GetMapping("/health_check")
     public String status() {
-        return String.format("Working in User Service! Your port number: %s", port);
+        return String.format("Working in User Service!"
+                + "%n, Your port: " + port
+                + "%n, Your token expirationTime: "+ expirationTime
+                + "%n, Your secret key: "+ secret
+        );
     }
 
     @GetMapping("/welcome")

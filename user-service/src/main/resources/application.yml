@@ -44,7 +44,9 @@ logging:
   level:
     root: debug
 
-jwt:
-  token:
-    expiration_time: 86400000
-    secret: thesecretkeyvalueofjwtmustbegreaterthan256bits
+management:
+  endpoints:
+    web:
+      exposure:
+        ## refresh: Spring config에 있는 설정정보를 갱신
+        include: refresh, health, beans

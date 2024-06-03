@@ -16,8 +16,6 @@ import java.util.Base64;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,7 +31,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private String SECRET_KEY;
     private String EXPIRATION_TIME;
 
-    @Autowired
     public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, String secretKey,
                                 String expirationTime) {
         super(authenticationManager);
