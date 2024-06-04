@@ -41,6 +41,14 @@ spring:
             filters:
               - RemoveRequestHeader=Cookie
               - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          - id: user-service
+            uri: lb://USER-SERVICE
+            predicates:
+              - Path=/user-service/actuator/**
+              - Method=GET,POST
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
           # book-catalog-service
           - id: book-catalog-service
@@ -91,3 +99,9 @@ jwt:
   token:
     expiration_time: 86400000
     secret: thesecretkeyvalueofjwtmustbegreaterthan256bits
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
