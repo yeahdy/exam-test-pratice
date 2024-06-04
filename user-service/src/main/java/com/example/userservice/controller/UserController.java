@@ -1,7 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.common.response.ResponseMessage;
-import com.example.userservice.config.RefreshListener;
+import com.example.userservice.config.MyRefreshListener;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    private final RefreshListener refreshListener;
+    private final MyRefreshListener refreshListener;
 
     @GetMapping("/health_check")
     public String status() {

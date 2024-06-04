@@ -1,6 +1,6 @@
 package com.example.userservice.security;
 
-import com.example.userservice.config.RefreshListener;
+import com.example.userservice.config.MyRefreshListener;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestLogin;
@@ -29,9 +29,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private UserService userService;
 
-    private RefreshListener refreshListener;
+    private MyRefreshListener refreshListener;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, RefreshListener refreshListener) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, MyRefreshListener refreshListener) {
         super(authenticationManager);
         this.userService = userService;
         this.refreshListener = refreshListener;

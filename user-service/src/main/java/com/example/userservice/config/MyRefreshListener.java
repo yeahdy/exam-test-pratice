@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RefreshScope
 @Component
 @Getter
-public class RefreshListener implements ApplicationListener<EnvironmentChangeEvent> {
+public class MyRefreshListener implements ApplicationListener<EnvironmentChangeEvent> {
                                         //EnvironmentChangeEvent: spring cloud config에서 제공하는 환경 설정이 변경됨을 알리는 이벤트 (git 저장소)
     @Value("${server.port}")
     private String port;
