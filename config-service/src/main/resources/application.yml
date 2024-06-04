@@ -8,5 +8,5 @@ spring:
     config:
       server:
         git:
-          uri: file:///${user.home}/Desktop/springcloud/discoveryservice/git-local-repo
+          uri: https://github.com/yeahdy/bookmark-config.git
 
