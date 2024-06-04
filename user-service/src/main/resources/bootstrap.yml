@@ -3,5 +3,6 @@ spring:
     config:
       uri: http://127.0.0.1:8888
       name: bookmark
+      ## config 서비스의 어플리케이션 명(config-service)을 입력할 경우 application.yml 파일을 가르킨다.
   profiles:
     active: dev
