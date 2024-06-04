@@ -1,6 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.common.response.ResponseMessage;
+import com.example.userservice.config.RefreshListener;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,19 +27,15 @@ public class UserController {
     private final Greeting greeting;
     private final UserService userService;
     private final ModelMapper modelMapper;
-    @Value("${server.port}")
-    private String port;
-    @Value("${jwt.token.expiration_time}")
-    private String expirationTime;
-    @Value("${jwt.token.secret}")
-    private String secret;
+
+    private final RefreshListener refreshListener;
 
     @GetMapping("/health_check")
     public String status() {
         return String.format("Working in User Service!"
-                + "%n, Your port: " + port
-                + "%n, Your token expirationTime: "+ expirationTime
-                + "%n, Your secret key: "+ secret
+                + "%n, Your port: " + refreshListener.getPort()
+                + "%n, Your token expirationTime: "+ refreshListener.getExpirationTime()
+                + "%n, Your secret key: "+ refreshListener.getSecret()
         );
     }
 

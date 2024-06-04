@@ -1,5 +1,6 @@
 package com.example.userservice.security;
 
+import com.example.userservice.config.RefreshListener;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestLogin;
@@ -28,15 +29,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private UserService userService;
 
-    private String SECRET_KEY;
-    private String EXPIRATION_TIME;
+    private RefreshListener refreshListener;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, String secretKey,
-                                String expirationTime) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, RefreshListener refreshListener) {
         super(authenticationManager);
         this.userService = userService;
-        this.SECRET_KEY = secretKey;
-        this.EXPIRATION_TIME = expirationTime;
+        this.refreshListener = refreshListener;
     }
 
     @Override
@@ -62,14 +60,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String userName = ((User) auth.getPrincipal()).getUsername();
         UserDto userDetails = userService.getUserDetailsByEmail(userName);
 
-        byte[] secretKeyBytes = Base64.getEncoder().encode(SECRET_KEY.getBytes());
+        byte[] secretKeyBytes = Base64.getEncoder().encode(refreshListener.getSecret().getBytes());
         SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);
         Instant now = Instant.now();
 
         // jwt 토큰생성
         String token = Jwts.builder()
                 .subject(userDetails.getUserId())
-                .expiration(Date.from(now.plusMillis(Long.parseLong(EXPIRATION_TIME))))
+                .expiration(Date.from(now.plusMillis(Long.parseLong(refreshListener.getExpirationTime()))))
                 .issuedAt(Date.from(now))
                 .signWith(secretKey)
                 .compact();

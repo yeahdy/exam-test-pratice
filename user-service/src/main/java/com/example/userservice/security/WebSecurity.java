@@ -1,10 +1,10 @@
 package com.example.userservice.security;
 
+import com.example.userservice.config.RefreshListener;
 import com.example.userservice.service.UserService;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,10 +27,7 @@ public class WebSecurity {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Value("${jwt.token.secret}")
-    private String secretKey;
-    @Value("${jwt.token.expiration_time}")
-    private String expirationTime;
+    private final RefreshListener refreshListener;
 
     public static final String ALLOWED_IP_ADDRESS = "127.0.0.1";
     public static final String SUBNET = "/32";
@@ -63,7 +60,7 @@ public class WebSecurity {
 
 
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) {
-        return new AuthenticationFilter(authenticationManager, userService, secretKey, expirationTime);
+        return new AuthenticationFilter(authenticationManager, userService, refreshListener);
     }
 
     private AuthorizationDecision hasIpAddress(Supplier<Authentication> authentication,
