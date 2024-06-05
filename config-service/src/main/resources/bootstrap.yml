@@ -1,2 +1,6 @@
 encrypt:
-  key: ThisisaSymmetricKey
+#  key: ThisisaSymmetricKey
+  key-store:
+    location: file:///${user.home}\Desktop\springcloud\keystore\bookmarkEncryptionKey.jks
+    password: test12
+    alias: bookmarkEncryptionKey
