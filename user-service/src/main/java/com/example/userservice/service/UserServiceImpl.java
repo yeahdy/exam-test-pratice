@@ -3,7 +3,6 @@ package com.example.userservice.service;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.jpa.UserEntity;
 import com.example.userservice.repository.UserRepository;
-import com.example.userservice.vo.ResponseOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,16 +21,18 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OrderService orderService;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 일반적으로 사용자의 id 를 통해 pw 정보를 가져온 후, authentication에서 pw 인증을 한다.
         UserEntity userEntity = userRepository.findByEmail(username);
-        if(userEntity == null){
+        if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
         return new User(userEntity.getEmail(), userEntity.getEncryptedPw(),
-                true,true,true,true ,new ArrayList<>());
+                true, true, true, true, new ArrayList<>());
     }
 
     @Override
@@ -40,19 +41,17 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         userRepository.save(userEntity);
-        return modelMapper.map(userEntity,UserDto.class);
+        return modelMapper.map(userEntity, UserDto.class);
     }
 
     @Override
     public UserDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId);
-        if (userEntity == null){
+        if (userEntity == null) {
             throw new NullPointerException("Not found user");
         }
-        UserDto userDto = modelMapper.map(userEntity,UserDto.class);
-        List<ResponseOrder> orders = new ArrayList<>();
-        userDto.setOrderList(orders);
-
+        UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+        userDto.setOrderList(orderService.getUserOrderList(userId));
         return userDto;
     }
 
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
         Iterable<UserEntity> userEntities = userRepository.findAll();
         List<UserDto> userDtos = new ArrayList<>();
         userEntities.forEach(
-                userEntity -> userDtos.add(modelMapper.map(userEntity ,UserDto.class))
+                userEntity -> userDtos.add(modelMapper.map(userEntity, UserDto.class))
         );
         return userDtos;
     }

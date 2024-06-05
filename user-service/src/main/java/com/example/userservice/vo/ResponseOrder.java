@@ -1,7 +1,11 @@
 package com.example.userservice.vo;
 
 import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class ResponseOrder {
 
     private String productId;
