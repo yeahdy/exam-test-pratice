@@ -52,19 +52,6 @@ public class OrderController {
     public ResponseMessage<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) throws Exception {
         log.info("Before retrieve orders data");
         List<ResponseOrder> orderList = orderService.getOrdersByUserId(userId);
-
-        try {
-            Random rnd = new Random();
-            int value = rnd.nextInt(5);
-            if (value % 2 == 0) {
-                Thread.sleep(10000);
-                throw new Exception("장애 발생");
-            }
-        } catch(InterruptedException ex) {
-            log.warn(ex.getMessage());
-        }
-
-        log.info("Add retrieved orders data");
         return ResponseMessage.success(orderList,"Order Enquiry");
     }
 }
