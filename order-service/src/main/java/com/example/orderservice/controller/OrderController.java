@@ -49,7 +49,7 @@ public class OrderController {
     }
 
     @GetMapping("/{userId}/orders")
-    public ResponseMessage<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) throws Exception {
+    public ResponseMessage<List<ResponseOrder>> getOrders(@PathVariable("userId") String userId) throws Exception {
         log.info("Before retrieve orders data");
         List<ResponseOrder> orderList = orderService.getOrdersByUserId(userId);
         return ResponseMessage.success(orderList,"Order Enquiry");

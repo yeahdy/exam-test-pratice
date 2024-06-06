@@ -1,8 +1,11 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
+import com.example.userservice.common.response.ResponseMessage;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.jpa.UserEntity;
 import com.example.userservice.repository.UserRepository;
+import com.example.userservice.vo.ResponseOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +24,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final OrderService orderService;
+//    private final OrderService orderService;
+    private final OrderServiceClient orderServiceClient;
 
 
     @Override
@@ -51,7 +55,8 @@ public class UserServiceImpl implements UserService {
             throw new NullPointerException("Not found user");
         }
         UserDto userDto = modelMapper.map(userEntity, UserDto.class);
-        userDto.setOrderList(orderService.getUserOrderList(userId));
+        ResponseMessage<List<ResponseOrder>> responseMessage = orderServiceClient.getOrders(userId);
+        userDto.setOrderList(responseMessage.getData());
         return userDto;
     }
 
