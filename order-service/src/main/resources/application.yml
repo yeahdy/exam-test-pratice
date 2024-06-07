@@ -1,24 +1,23 @@
 server:
-  port: 10000
+  port: 0
 
 spring:
   application:
     name: order-service
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ENC(uEbqEYsvcO6g+Nv/pR91tggoYY5R0swYVHbMYWxUxUiUBmHRB/t3YtYdhye7G6a4jdu+zXnXSYCITNauVI7Dq7SRGuR2SXpaZTpJ2QzLaaX9i8fjyeQvYsMwuZZpbPREOJUC4ruNVPMcBTQBwZ7nNZMw5/ABdkzm2Z3Y4QThTeE=)
+    username: ENC(BHmzH6N1SF+8i28j1sGPGr/5CLXsirLLLobj6Y0EeabsvuBZ9PUntRr4A/MNwHce)
+    password: ENC(amiQL2z0fbPr5ivcMingFGTFPPbEcvVWbwR4yA5ZV8/mCxWB/uZW/yrB21NSmOxY)
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: true
+#      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: update
-      dialect: org.hibernate.dialect.H2Dialect
-    database-platform: org.hibernate.dialect.H2Dialect
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;NON_KEYWORDS=ORDER
-    username: sa
 
 eureka:
   instance:
@@ -32,3 +31,9 @@ eureka:
 logging:
   level:
     com.example.orderservice: DEBUG
+
+jasypt:
+  encryptor:
+    password: ${jasypt-key}
+    bean: jasyptEncryptor
+
