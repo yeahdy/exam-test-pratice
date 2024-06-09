@@ -18,6 +18,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        auto_quote_keyword: true
 
 eureka:
   instance:

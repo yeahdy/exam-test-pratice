@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ResponseOrder {
-
-    private String productId;
+    private String bookId;
     private Integer qty;
-    private Integer unitPrice;
+    private Integer price;
     private Integer totalPrice;
     private Date createdAt;
 
     private String orderId;
-
 }
