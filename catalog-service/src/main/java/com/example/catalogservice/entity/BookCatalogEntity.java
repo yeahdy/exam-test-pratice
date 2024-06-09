@@ -1,5 +1,6 @@
 package com.example.catalogservice.entity;
 
+import com.example.catalogservice.exception.NotEnoughStockException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +36,14 @@ public class BookCatalogEntity implements Serializable {
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private Date createdAt;
+
+
+    public void minusStock(int quantity){
+        int restStock = this.stock - quantity;
+        if(restStock < 0){
+            throw new NotEnoughStockException("The stock cannot be less than zero.");
+        }
+        this.stock = restStock;
+    }
+
 }
