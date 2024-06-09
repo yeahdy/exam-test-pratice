@@ -2,37 +2,35 @@
 
 > **Kafka 실행**
 > 
-> 
 > ```bash
 > docker run --env CONFIG_NAME=CONFIG_VALUE -p 9092:9092 apache/kafka:3.7.0
 > ```
 > 
 > ### **Kafka와 데이터를 주고받기 위해 사용하는 Java Library**
-> 
 > - https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
 
 </br>
 
 ### **Zookeeper 및 Kafka 서버 기동**
-
-> {KAFKA_HOME\bin\windows} .\zookeeper-server-start.bat ..\..\config\zookeeper.properties
-> 
-> 
+> ```bash
+> ${KAFKA_HOME\bin\windows} .\zookeeper-server-start.bat ..\..\config\zookeeper.properties
+> ```
+> ```bash
 > ${KAFKA_HOME\bin\windows} .\kafka-server-start.bat ..\..\config\server.properties
-> 
+> ```
 
 </br>
 
 ### **Topic 생성**
 
 > ```bash
-> .\kafka-topics.bat --bootstrap-server localhost:9092 --create --topic first-events --partitions 1
+> ${KAFKA_HOME\bin\windows} .\kafka-topics.bat --bootstrap-server localhost:9092 --create --topic first-events --partitions 1
 > ```
 - **kafka-topics.sh**
 토픽 프로그램 실행
 - **-create --topic {토픽명}**
 토픽 생성과 토픽이름 지정 (quickstart-events)
-- **--bootstrap-server localhost:9092 \**
+- **--bootstrap-server localhost:9092**
 카프카 서버 (포트번호 9092)에 토픽을 생성
 - **--partitions 1**
 멀티 클러스트링을 구성했을 때 카프카의 토픽에 전달되어 있는 메세지를 몇 군데 나눠서 저장할 것인지 (서비스를 1대만 구성할 것이기 때문에 1)
@@ -46,7 +44,7 @@
 > ```
 
 ```bash
-PS C:\Desktop\springcloud\kafka_demo\kafka_2.13-3.7.0\bin\windows> **.\kafka-topics.bat --bootstrap-server localhost:9092** **--describe**
+PS C:{HOME}\springcloud\kafka_demo\kafka_2.13-3.7.0\bin\windows> .\kafka-topics.bat --bootstrap-server localhost:9092 --describe
 Topic: first-events     TopicId: MYZc27YVSWSea0QC3XZgxA PartitionCount: 1  ReplicationFactor: 1     Configs:
         Topic: first-events     Partition: 0    Leader: 0       Replicas: 0Isr: 0
 ```
@@ -64,7 +62,7 @@ Topic: first-events     TopicId: MYZc27YVSWSea0QC3XZgxA PartitionCount: 1  Repli
 ### **Windows에서 기동**
 
 > ```bash
-> ${KAFKA_HOME\bin\windows} **.**\zookeeper-server-start.**bat** .\config\zookeeper.properties
+> ${KAFKA_HOME\bin\windows} .\zookeeper-server-start.bat .\config\zookeeper.properties
 > ```
 
 </br>
@@ -129,15 +127,14 @@ Topic: first-events     TopicId: MYZc27YVSWSea0QC3XZgxA PartitionCount: 1  Repli
 ```bash
 wget -O http://packages.confluent.io/archive/6.1/confluent-community-7.1.0.tar.gz
 tar xvf confluent-community-7.1.0.tar.gz
-cd  $KAFKA_CONNECT_HOME
 ```
 
 ### **Kafka Connect 실행**
 
 ```bash
 # 둘중 하나 사용
-{KAFKA_HOME} ./config/connect-distributed.properties
-{KAFKA_CONNECT_HOME/bin/windows} ./connect-distributed.bat ../../etc/kafka/connect-distributed.properties
+${KAFKA_HOME} ./config/connect-distributed.properties
+${KAFKA_CONNECT_HOME/bin/windows} ./connect-distributed.bat ../../etc/kafka/connect-distributed.properties
 ```
 
 Zookeeper, Kafka 서버 실행중일 때 가능
@@ -145,7 +142,7 @@ Zookeeper, Kafka 서버 실행중일 때 가능
 ### **Kafka Connect 목록확인**
 
 ```bash
-./bin/windows/kafka-topics.bat --bootstrap-server localhost:9092 --list
+${KAFKA_CONNECT_HOME/bin/windows} ./kafka-topics.bat --bootstrap-server localhost:9092 --list
 ```
 
 </br>
@@ -165,7 +162,7 @@ Zookeeper, Kafka 서버 실행중일 때 가능
         "connector.class" : "io.confluent.connect.jdbc.JdbcSourceConnector",
         "connection.url":"jdbc:mariadb://localhost:3306/testdb",
         "connection.user":"root",
-        "connection.password":"test,
+        "connection.password":"test",
         "mode": "incrementing",
         "incrementing.column.name" : "id",
         "table.whitelist":"testdb.user",
@@ -176,7 +173,7 @@ Zookeeper, Kafka 서버 실행중일 때 가능
 ```
 
 - 위 데이터를 소스 커넥터에 전달했기 때문에
-사용자가 `"dailymark.user"`테이블에 데이터 추가 시 소스 커넥터에 데이터가 쌓이게 됨
+사용자가 `"testdb.user"`테이블에 데이터 추가 시 소스 커넥터에 데이터가 쌓이게 됨
 
 **Sink Connect 전달**
 
