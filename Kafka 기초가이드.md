@@ -125,7 +125,7 @@ Topic: first-events     TopicId: MYZc27YVSWSea0QC3XZgxA PartitionCount: 1  Repli
 ### **Kafka Connect 설치**
 
 ```bash
-wget -O http://packages.confluent.io/archive/6.1/confluent-community-7.1.0.tar.gz
+wget http://packages.confluent.io/archive/7.1/confluent-community-7.1.0.tar.gz
 tar xvf confluent-community-7.1.0.tar.gz
 ```
 
