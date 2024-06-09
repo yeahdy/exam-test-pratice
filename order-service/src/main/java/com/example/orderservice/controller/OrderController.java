@@ -1,12 +1,12 @@
 package com.example.orderservice.controller;
 
 import com.example.orderservice.dto.OrderDto;
+import com.example.orderservice.messagequeue.KafkaProducer;
 import com.example.orderservice.response.ResponseMessage;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseOrder;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +26,8 @@ public class OrderController {
     private final Environment env;
     private final  OrderService orderService;
     private final  ModelMapper modelMapper;
+    private final KafkaProducer kafkaProducer;
+
 
     @GetMapping("/health_check")
     public String status() {
@@ -37,19 +39,18 @@ public class OrderController {
     @PostMapping("/{userId}/orders")
     public ResponseMessage<ResponseOrder> createOrder(@PathVariable("userId") String userId,
                                                      @RequestBody RequestOrder orderDetails) {
-        log.info("Before add orders data");
         OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
         orderDto.setUserId(userId);
-        /* jpa */
+
         OrderDto createdOrder = orderService.createOrder(orderDto);
         ResponseOrder responseOrder = modelMapper.map(createdOrder, ResponseOrder.class);
-
-        log.info("After added orders data");
+        // 주문 내역 kafka에게 전달
+        kafkaProducer.sendOrder("book-catalog-topic",orderDto);
         return ResponseMessage.createSuccess(responseOrder);
     }
 
     @GetMapping("/{userId}/orders")
-    public ResponseMessage<List<ResponseOrder>> getOrders(@PathVariable("userId") String userId) throws Exception {
+    public ResponseMessage<List<ResponseOrder>> getOrders(@PathVariable("userId") String userId) {
         log.info("Before retrieve orders data");
         List<ResponseOrder> orderList = orderService.getOrdersByUserId(userId);
         return ResponseMessage.success(orderList,"Order Enquiry");
