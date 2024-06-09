@@ -40,3 +40,8 @@ jasypt:
     password: ${jasypt-key}
     bean: jasyptEncryptor
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
