@@ -1,7 +1,11 @@
 package com.example.orderservice.controller;
 
+import static com.example.orderservice.messagequeue.KafkaTopics.BOOK_CATALOG_TOPIC;
+import static com.example.orderservice.messagequeue.KafkaTopics.ORDERS_BOOK;
+
 import com.example.orderservice.dto.OrderDto;
 import com.example.orderservice.messagequeue.KafkaProducer;
+import com.example.orderservice.messagequeue.OrderProducer;
 import com.example.orderservice.response.ResponseMessage;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
@@ -27,6 +31,7 @@ public class OrderController {
     private final  OrderService orderService;
     private final  ModelMapper modelMapper;
     private final KafkaProducer kafkaProducer;
+    private final OrderProducer orderProducer;
 
 
     @GetMapping("/health_check")
@@ -41,11 +46,14 @@ public class OrderController {
                                                      @RequestBody RequestOrder orderDetails) {
         OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
         orderDto.setUserId(userId);
+        orderDto.calcOrderPrice();
 
-        OrderDto createdOrder = orderService.createOrder(orderDto);
-        ResponseOrder responseOrder = modelMapper.map(createdOrder, ResponseOrder.class);
+//        OrderDto createdOrder = orderService.createOrder(orderDto);
+
         // 주문 내역 kafka에게 전달
-        kafkaProducer.sendOrder("book-catalog-topic",orderDto);
+        kafkaProducer.sendOrder(BOOK_CATALOG_TOPIC,orderDto);
+        orderProducer.sendOrder(ORDERS_BOOK,orderDto);
+        ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
         return ResponseMessage.createSuccess(responseOrder);
     }
 
