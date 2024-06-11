@@ -45,8 +45,13 @@ management:
   endpoints:
     web:
       exposure:
-        ## refresh: Spring config에 있는 설정정보를 갱신
-        include: refresh, health, beans, busrefresh, info, metrics, prometheus
+        include: "*"
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+    health:
+      show-details: always
   #zipkin
   tracing:
     sampling:
