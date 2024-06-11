@@ -12,6 +12,9 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,8 +29,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-//    private final OrderService orderService;
+    //    private final OrderService orderService;
     private final OrderServiceClient orderServiceClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,7 +60,14 @@ public class UserServiceImpl implements UserService {
             throw new NullPointerException("Not found user");
         }
         UserDto userDto = modelMapper.map(userEntity, UserDto.class);
-        ResponseMessage<List<ResponseOrder>> responseMessage = orderServiceClient.getOrders(userId);
+//        ResponseMessage<List<ResponseOrder>> responseMessage = orderServiceClient.getOrders(userId);
+
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+        ResponseMessage<List<ResponseOrder>> responseMessage = circuitBreaker.run(
+                () -> orderServiceClient.getOrders(userId),
+                throwable -> new ResponseMessage<>(HttpStatus.INTERNAL_SERVER_ERROR, "order service error", new ArrayList<>()));
+        log.info("/order-service/{userId}/orders RESULT :: "+responseMessage);
+
         userDto.setOrderList(responseMessage.getData());
         return userDto;
     }
