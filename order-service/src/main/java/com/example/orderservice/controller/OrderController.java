@@ -44,16 +44,20 @@ public class OrderController {
     @PostMapping("/{userId}/orders")
     public ResponseMessage<ResponseOrder> createOrder(@PathVariable("userId") String userId,
                                                      @RequestBody RequestOrder orderDetails) {
+        log.info("Before add order data");
         OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
         orderDto.setUserId(userId);
-        orderDto.calcOrderPrice();
 
 //        OrderDto createdOrder = orderService.createOrder(orderDto);
+//        ResponseOrder responseOrder = modelMapper.map(createdOrder, ResponseOrder.class);
 
-        // 주문 내역 kafka에게 전달
-        kafkaProducer.sendOrder(BOOK_CATALOG_TOPIC,orderDto);
+        orderDto.calcOrderPrice();
+        // 주문 내역 kafka Source connect 전달 -> kafka producer
         orderProducer.sendOrder(ORDERS_BOOK,orderDto);
+        // 주문 내역 kafka producer 전달
+        kafkaProducer.sendOrder(BOOK_CATALOG_TOPIC,orderDto);
         ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
+        log.info("After added order data");
         return ResponseMessage.createSuccess(responseOrder);
     }
 

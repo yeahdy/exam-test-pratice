@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         ResponseMessage<List<ResponseOrder>> responseMessage = circuitBreaker.run(
                 () -> orderServiceClient.getOrders(userId),
                 throwable -> new ResponseMessage<>(HttpStatus.INTERNAL_SERVER_ERROR, "order service error", new ArrayList<>()));
-        log.info("/order-service/{userId}/orders RESULT :: "+responseMessage);
+        log.info("After call ORDER-SERVICE");
 
         userDto.setOrderList(responseMessage.getData());
         return userDto;

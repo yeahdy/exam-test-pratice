@@ -2,6 +2,8 @@ server:
   port: 0
 
 spring:
+  config:
+    name: user-service
   application:
     name: user-service
   rabbitmq:
@@ -34,6 +36,8 @@ jasypt:
     bean: jasyptEncryptor
 
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     com.example.userservice.client: DEBUG
 
@@ -42,4 +46,14 @@ management:
     web:
       exposure:
         ## refresh: Spring config에 있는 설정정보를 갱신
-        include: refresh, health, beans, busrefresh
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus
+  #zipkin
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
