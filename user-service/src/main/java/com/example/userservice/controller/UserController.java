@@ -7,6 +7,7 @@ import com.example.userservice.service.UserService;
 import com.example.userservice.vo.Greeting;
 import com.example.userservice.vo.RequestUser;
 import com.example.userservice.vo.ResponseUser;
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
+    @Timed(value = "user.list", longTask = true)
     public ResponseMessage<List<ResponseUser>> getUsers() {
         List<UserDto> userDtos = userService.getUserByAll();
         List<ResponseUser> result = new ArrayList<>();
@@ -63,6 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
+    @Timed(value = "user.userId", longTask = true)
     public ResponseMessage<ResponseUser> getUserInfo(@PathVariable("userId") String userId) {
         UserDto userDto = userService.getUserByUserId(userId);
         return ResponseMessage.success(
