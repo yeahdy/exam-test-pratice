@@ -61,6 +61,16 @@ spring:
             uri: lb://BOOK-CATALOG-SERVICE
             predicates:
               - Path=/book-catalog-service/**
+
+          # order-service
+          - id: order-service
+            uri: lb://ORDER-SERVICE
+            predicates:
+              - Path=/order-service/actuator/**
+              - Method=GET,POST
+            filters:
+              - RemoveRequestHeader=Cookie
+              - RewritePath=/order-service/(?<segment>.*), /$\{segment}
           - id: order-service
             uri: lb://ORDER-SERVICE
             predicates:
