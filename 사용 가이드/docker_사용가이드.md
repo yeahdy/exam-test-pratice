@@ -1,0 +1,165 @@
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/47820c9b-4c1c-4c11-b6d1-bd02cd8d5849/e845c2a3-3872-41e2-8497-0701af6a19c4.png)
+
+## Container 가상화
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/f556bf4d-79d2-4556-b709-e74bbdfa73e0/43d9310b-9fb7-4481-946a-386a82754ae7.png)
+
+- 하이퍼바이저(Hypervisor) 대신 가상컨테이너가 존재
+- 중복 코드가 있을 경우 사용하지 않을 수 있음
+- 게스트OS 자체가 설치되는 것이 아닌 소프트웨어(Docker엔진)만 있으면 가상화 실행을 위한 필요한 것만 실행하면 됨
+- 호스트PC가 가지고 있는 리소스와 도커 엔진이 가지고 있는 리소스를 같이 공유, 사용 가능
+→ 최소한의 내용으로 실행가능 해서 속도 빠름
+
+</br>
+
+## Container Image
+
+**Container 실행에 필요한 설정 값** → 상태값X, 불변
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/caa43eb0-6394-4f5d-8e1b-d21a327b721a/6e985813-42bf-4ade-8a6a-3a1d49d56500.png)
+
+- Image를 가지고 실체화 → Container
+- MySQL Image
+→ MySQL 서버를 실행할 때 필요한 파일, 포트정보, 실행명령어 등을 포함
+- 컨테이너를 실행하기 위한 모든 정보를 갖고 있어서 의존성 컴파일, 설치 필요 X
+→ Image로 소프트웨어, 운영체제 실행 가능
+- **Registry** 저장소에 필요한 이미지를 올림
+
+</br>
+
+## Docker Host
+
+생성된 이미지를 사용할 수 있는 컨테이너 서버
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/6fd28242-7818-4e96-8da9-b8448b427706/df2a6794-9daf-45ac-a94e-6d307c829a67.png)
+
+- **Local Repository**
+도커 호스트에서 실행할 수 있는 컨테이너가 저장되어 있는 자체 Local Repository
+public Registry, private Registry 에서 이미지 다운로드 받아서 local Repository에 저장
+- **Container 생성**
+Local Repository에 저장된 이미지를 통해 컨테이너 생성
+- **create** 커멘드
+****컨테이너 생성
+- **start** 커멘드
+생성된 컨테이너를 실행
+- **run** 커멘드
+create + start → 로컬 레파지토리에 저장되어 있지 않은 이미지라면 Registry 에서 pull(다운로드)받고 생성과 실행을 해줌
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/19f30e04-8c16-46ec-8565-b28f3f4997b5/7d81eb47-c00e-4c0c-aaaa-9c462a133df5.png)
+
+클라이언트에서 사용하기 위한 포트가 공개되어 있을 경우 클라이언트에서 독립적으로 운영될 수 있는 서비스처럼 실행해서 사용 가능 
+
+- MySQL 의 3306 포트 오픈
+→ 외부에서 사용할 수 있도록 연결
+
+</br>
+
+## Dokerfile
+
+**Docker Image 생성을 위한 스크립트 파일** (이미지 생성과정 기술)
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/d5b2d828-e191-478e-a724-337144cb5b7a/88a6b142-0364-495b-9984-a62b8199616e.png)
+
+- 자체 DSL(Domain-Specific-language) 언어 사용
+- 파일명 자체가 Dokerfile로 생성
+- **From-어떤 서버로 부터 이미지를 만들건지**
+- **ENV-환경변수**
+- **ADD-로컬 파일을 이미지에 저장**
+- **EXPOSE-외부에 공개될 수 있는 포트**
+
+
+
+</br>
+
+## Docker 컨테이너 명령어
+```bash
+$ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG..]
+```
+
+**예시**
+```bash
+$ docker run ubuntu:16.04
+$ docker run -d -p 13306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mariadb mariadb
+```
+
+| 옵션 | 설명 |
+| ----------- | ----------- |
+| `-d` | detached mode 백드라운드 모드 </br>→ 일반적으로 Docker 컨테이너를 실행하면, 해당 컨테이너의 로그 출력이 터미널에 직접 표시되고, 컨테이너가 종료되면 터미널 세션도 함께 종료된다. 하지만 -d 옵션을 사용하면, **Docker 컨테이너는 백그라운드에서 독립적으로 실행되며, 터미널 세션과는 독립적으로 동작한다.** |
+| `-p` | 호스트(windows, Mac OS)와 컨테이너의 포트를 연결(포워딩)  </br>-p 옵션 뒤에 {호스트 포트}:{컨테이너 포트} 형식 → `-p 8080:80` </br>**호스트 컴퓨터의 네트워크를 통해 Docker 컨테이너 서비스에 접근 가능하다. 만약 호스트 컴퓨터의 웹브라우저에서 localhost:8080 으로 접속하면 Docker 컨테이너의 웹서버에 접근 가능.** |
+| `-v` | 호스트와 컨테이너의 디렉토리를 연결(마운트) 해 파일을 공유  </br>-v 옵션 뒤에 {호스트 디렉토리}:{컨테이너 디렉토리} 형식 → `-v /desktop/user/data:/data`  </br>/**desktop/user/data 디렉토리가 Docker 컨테이너에 연결** |
+| `-e` | 컨테이너 내에서 사용할 환경변수 설정  </br>-e 옵션 뒤에 <변수명>=<값> 형식 → `-e MY_VARIABLE=my_value` </br>Docker 컨테이너 내부에서 `MY_VARIABLE`라는 이름의 환경 변수가 `my_value`라는 값을 가지게 됨 |
+| `--name` | 컨테이너 이름 설정 </br>Docker 컨테이너의 이름을 my_container 설정 → `--name my_container` </br>`docker ps`, `docker stop`, `docker start` 등의 명령에서 컨테이너 ID 대신 사용 가능 |
+| `-rm` | 프로세스 종료 시 컨테이너 자동 제거 |
+| `-it` |  Interactive Mode를 의미하며 사용자가 도커 컨테이너에 직접 명령을 실행하고 결과를 확인할 수 있다. 로컬 컴퓨터에서 직접 명령을 실행하는 것 처럼 Docker 컨테이너를 제어 가능. </br>-i 와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션 |
+| `exec` | 실행중인 컨테이너에 어떤 커맨드를 전달할 때 사용 </br>`$ docker exec -it mysql bash` |
+|`-link`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 컨테이너 연결 [컨테이너명:별칭] |
+
+</br>
+
+```bash
+## 도커 이미지 조회
+$ docker image ls
+$ docker images
+
+## 실행중인 컨테이너 조회
+$ docker container ls
+## 종료된 컨테이너 조회 
+$ docker container ls -a
+
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS                      PORTS     NAMES
+f6a54f6e9fe9   ubuntu    "/bin/bash"   46 seconds ago   Exited (0) 45 seconds ago             keen_panini
+
+
+## 특정 키워드로 도커 이미지 조회 (windows)
+$ docker images | findstr {이미지명}
+$ docker images | findstr ubuntu
+
+## 컨테이너 삭제
+$ docker container rm {CONTAINER ID}
+$ docker container rm {f6a54f6e9fe9}
+```
+
+### 도커로 mariadb 컨테이너 접속하기
+
+```bash
+## 백그라운드 모드로 host 포트는 13306:docker 포트는 3306으로 mariadb에 컨테이너 생성+실행
+$ docker run -d -p 13306:3306 -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true --name my_mariadb mariadb
+
+## 실행 log 확인
+$ docker logs {container name}
+$ docker logs my_mariadb 
+
+## mariadb container 접속
+$ docker exec -it {container name} /bin/bash
+$ docker exec -it my_mariadb /bin/bash
+```
+
+### Dockerfile 을 통해 컨테이너 빌드하기
+
+```bash
+## 빌드. userID는 docker Heb 계정의 username과 일치하도록 한다.
+$ docker build -t {userId/컨테이너명:태그} .
+$ docker build -t yeahdy/users-service:1.0 .
+```
+</br>
+
+![docker user-service container push.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/07da40f9-342f-4146-8774-083c5c16c3a9/docker_user-service_container_push.png)
+
+```bash
+## Docker Hub에 올리기
+$ docker push {이미지명}
+$ docker push yeah/users-service:1.0
+
+## Docker Hub에서 내려받기
+$ docker pull {이미지명}
+$ docker pull yeah/users-service:1.0
+
+## Docker image명 변경 (동일한 이미지ID를 가진 2개의 이미지가 생성됨)
+$ docker image tag {수정할 이미지명} {변경할 이미지명}
+$ docker image tag yy123/users-service:1.0 yeah/users-service:1.0
+
+## Docker image 삭제
+$ docker rmi {이미지명}
+## 동일한 이미지ID가 여러개일 경우
+$ docker rmi -f 6d6b3dcfab72
+```
