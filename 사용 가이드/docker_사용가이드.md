@@ -70,10 +70,10 @@ CMD ["bookmarkd"]
 
 - 자체 DSL(Domain-Specific-language) 언어 사용
 - 파일명 자체가 Dokerfile로 생성
-- **From-어떤 서버로 부터 이미지를 만들건지**
-- **ENV-환경변수**
-- **ADD-로컬 파일을 이미지에 저장**
-- **EXPOSE-외부에 공개될 수 있는 포트**
+- **From | 어떤 서버로 부터 이미지를 만들건지**
+- **ENV | 환경변수**
+- **ADD | 로컬 파일을 이미지에 저장**
+- **EXPOSE | 외부에 공개될 수 있는 포트**
 
 </br>
 
@@ -146,8 +146,8 @@ $ docker exec -it my_mariadb /bin/bash
 ### Dockerfile 을 통해 컨테이너 빌드하기
 
 ```bash
-## 빌드. userID는 docker Heb 계정의 username과 일치하도록 한다.
-$ docker build -t {userId/컨테이너명:태그} .
+## 빌드하기 userID는 docker Hub 계정의 username과 일치하도록 한다.
+$ docker build -t {userID/컨테이너명:태그} .
 $ docker build -t yeahdy/users-service:1.0 .
 ```
 
@@ -156,15 +156,15 @@ $ docker build -t yeahdy/users-service:1.0 .
 ```bash
 ## Docker Hub에 올리기
 $ docker push {이미지명}
-$ docker push yeah/users-service:1.0
+$ docker push yeahdy/users-service:1.0
 
 ## Docker Hub에서 내려받기
 $ docker pull {이미지명}
-$ docker pull yeah/users-service:1.0
+$ docker pull yeahdy/users-service:1.0
 
 ## Docker image명 변경 (동일한 이미지ID를 가진 2개의 이미지가 생성됨)
 $ docker image tag {수정할 이미지명} {변경할 이미지명}
-$ docker image tag yy123/users-service:1.0 yeah/users-service:1.0
+$ docker image tag yy123/users-service:1.0 yeahdy/users-service:1.0
 
 ## Docker image 삭제
 $ docker rmi {이미지명}
