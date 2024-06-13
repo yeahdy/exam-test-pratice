@@ -1,6 +1,8 @@
 encrypt:
 #  key: ThisisaSymmetricKey
   key-store:
-    location: file:///${user.home}\Desktop\springcloud\keystore\bookmarkEncryptionKey.jks
+#    location: file:///${user.home}\Desktop\springcloud\keystore\bookmarkEncryptionKey.jks
+    ## Docker 컨테이너 루트 경로에 저장된 복사된 키파일 위치로 변경
+    location: file:\bookmarkEncryptionKey.jks
     password: test12
     alias: bookmarkEncryptionKey
