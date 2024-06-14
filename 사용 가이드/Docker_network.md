@@ -84,8 +84,7 @@ $ docker network inspect bookmark-network
 </br>
 
 ## **Docker 에서 네트워크를 직접 생성하는 이유**
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93.png)
+<img src = "https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/8097e088-4268-4633-9d4f-dab4af5952f6" width="50%" height="height 50%">
 
 - 컨테이너 == 게스트OS, 각 게스트OS 마다 고유한 IP 주소가 부여
     - 각 마이크로서비스(user-service, API Gateway, Grafana…) 들은 고유한 IP주소를 할당 받음
