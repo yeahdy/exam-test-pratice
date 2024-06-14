@@ -1,86 +1,96 @@
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/47820c9b-4c1c-4c11-b6d1-bd02cd8d5849/e845c2a3-3872-41e2-8497-0701af6a19c4.png)
-
 ## Container 가상화
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/f556bf4d-79d2-4556-b709-e74bbdfa73e0/43d9310b-9fb7-4481-946a-386a82754ae7.png)
+<img align="left" width="250" height="250" src="https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/ee8aa6d0-e87f-4cba-bc5a-a09452e2108e">
 
 - 하이퍼바이저(Hypervisor) 대신 가상컨테이너가 존재
 - 중복 코드가 있을 경우 사용하지 않을 수 있음
 - 게스트OS 자체가 설치되는 것이 아닌 소프트웨어(Docker엔진)만 있으면 가상화 실행을 위한 필요한 것만 실행하면 됨
-- 호스트PC가 가지고 있는 리소스와 도커 엔진이 가지고 있는 리소스를 같이 공유, 사용 가능
-→ 최소한의 내용으로 실행가능 해서 속도 빠름
+- 호스트PC가 가지고 있는 리소스와 도커 엔진이 가지고 있는 리소스를 같이 공유, 사용 가능</br>
+ → 최소한의 내용으로 실행가능 해서 속도 빠름
 
-</br>
+</br></br></br></br>
 
 ## Container Image
-
 **Container 실행에 필요한 설정 값** → 상태값X, 불변
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/caa43eb0-6394-4f5d-8e1b-d21a327b721a/6e985813-42bf-4ade-8a6a-3a1d49d56500.png)
+<img align="left" width="250" height="250" src="https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/7b74cd29-2f29-454f-9e7c-1c9e7ac15a34">
 
 - Image를 가지고 실체화 → Container
 - MySQL Image
 → MySQL 서버를 실행할 때 필요한 파일, 포트정보, 실행명령어 등을 포함
-- 컨테이너를 실행하기 위한 모든 정보를 갖고 있어서 의존성 컴파일, 설치 필요 X
+- 컨테이너를 실행하기 위한 모든 정보를 갖고 있어서 의존성 컴파일, 설치 필요 X</br>
 → Image로 소프트웨어, 운영체제 실행 가능
 - **Registry** 저장소에 필요한 이미지를 올림
 
-</br>
+</br></br></br></br></br>
 
 ## Docker Host
 
-생성된 이미지를 사용할 수 있는 컨테이너 서버
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/6fd28242-7818-4e96-8da9-b8448b427706/df2a6794-9daf-45ac-a94e-6d307c829a67.png)
+생성된 이미지를 사용할 수 있는 컨테이너 서버 </br>
+<p align="left">
+<img width="500" height="300" src="https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/6ef5678d-320d-40d2-b011-3f9a63810eec">
+</p>
 
 - **Local Repository**
 도커 호스트에서 실행할 수 있는 컨테이너가 저장되어 있는 자체 Local Repository
 public Registry, private Registry 에서 이미지 다운로드 받아서 local Repository에 저장
 - **Container 생성**
 Local Repository에 저장된 이미지를 통해 컨테이너 생성
-- **create** 커멘드
-****컨테이너 생성
-- **start** 커멘드
-생성된 컨테이너를 실행
-- **run** 커멘드
-create + start → 로컬 레파지토리에 저장되어 있지 않은 이미지라면 Registry 에서 pull(다운로드)받고 생성과 실행을 해줌
+- **create** 커멘드</br>
+ 컨테이너 생성
+- **start** 커멘드</br>
+ 생성된 컨테이너를 실행
+- **run** 커멘드</br>
+ create + start → 로컬 레파지토리에 저장되어 있지 않은 이미지라면 Registry 에서 pull(다운로드)받고 생성과 실행을 해줌
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/19f30e04-8c16-46ec-8565-b28f3f4997b5/7d81eb47-c00e-4c0c-aaaa-9c462a133df5.png)
+</br>
+
+<img align="left" width="250" height="250" src="https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/e93ded10-19f4-4bde-81f1-3ddb59278a25">
 
 클라이언트에서 사용하기 위한 포트가 공개되어 있을 경우 클라이언트에서 독립적으로 운영될 수 있는 서비스처럼 실행해서 사용 가능 
 
 - MySQL 의 3306 포트 오픈
 → 외부에서 사용할 수 있도록 연결
 
-</br>
+</br></br></br></br></br></br></br>
 
 ## Dokerfile
 
 **Docker Image 생성을 위한 스크립트 파일** (이미지 생성과정 기술)
+```docker
+FROM mysql:5.7
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/d5b2d828-e191-478e-a724-337144cb5b7a/88a6b142-0364-495b-9984-a62b8199616e.png)
+ENV MYSQL_ALLOW_EMPTY_PASSWORD true
+ENV MYSQL_DATABASE bookmarkdb
+
+ADD ../db_mount /var/lib/bookmarkdb
+
+EXPOSE 3306
+
+CMD ["mysqld"]
+```
 
 - 자체 DSL(Domain-Specific-language) 언어 사용
 - 파일명 자체가 Dokerfile로 생성
-- **From-어떤 서버로 부터 이미지를 만들건지**
-- **ENV-환경변수**
-- **ADD-로컬 파일을 이미지에 저장**
-- **EXPOSE-외부에 공개될 수 있는 포트**
-
-
+- **From | 어떤 서버로 부터 이미지를 만들건지**
+- **ENV | 환경변수**
+- **ADD | 로컬 파일을 이미지에 저장**
+- **EXPOSE | 외부에 공개될 수 있는 포트**
 
 </br>
 
 ## Docker 컨테이너 명령어
-```bash
+```docker
 $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG..]
 ```
+버전에 따라 이미지를 업로드하기 위해 `:16.02` 와 같이 태그(`:TAG`)를 붙인다. 이미지명은 중복될 수 없음
 
 **예시**
-```bash
+```docker
 $ docker run ubuntu:16.04
 $ docker run -d -p 13306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mariadb mariadb
 ```
+
+</br>
 
 | 옵션 | 설명 |
 | ----------- | ----------- |
@@ -96,7 +106,7 @@ $ docker run -d -p 13306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mariadb 
 
 </br>
 
-```bash
+```docker
 ## 도커 이미지 조회
 $ docker image ls
 $ docker images
@@ -119,9 +129,11 @@ $ docker container rm {CONTAINER ID}
 $ docker container rm {f6a54f6e9fe9}
 ```
 
+</br>
+
 ### 도커로 mariadb 컨테이너 접속하기
 
-```bash
+```docker
 ## 백그라운드 모드로 host 포트는 13306:docker 포트는 3306으로 mariadb에 컨테이너 생성+실행
 $ docker run -d -p 13306:3306 -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true --name my_mariadb mariadb
 
@@ -133,33 +145,50 @@ $ docker logs my_mariadb
 $ docker exec -it {container name} /bin/bash
 $ docker exec -it my_mariadb /bin/bash
 ```
+</br>
 
 ### Dockerfile 을 통해 컨테이너 빌드하기
 
-```bash
-## 빌드. userID는 docker Heb 계정의 username과 일치하도록 한다.
-$ docker build -t {userId/컨테이너명:태그} .
+```docker
+## 빌드하기 userID는 docker Hub 계정의 username과 일치하도록 한다.
+$ docker build -t {userID/컨테이너명:태그} .
 $ docker build -t yeahdy/users-service:1.0 .
 ```
-</br>
 
-![docker user-service container push.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecf41e3d-7437-4c24-9f93-2ffc3a5c01e1/07da40f9-342f-4146-8774-083c5c16c3a9/docker_user-service_container_push.png)
+![7](https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/2d73e4d0-3c72-456b-811c-5d9071874675)
 
-```bash
+```docker
 ## Docker Hub에 올리기
 $ docker push {이미지명}
-$ docker push yeah/users-service:1.0
+$ docker push yeahdy/users-service:1.0
 
 ## Docker Hub에서 내려받기
 $ docker pull {이미지명}
-$ docker pull yeah/users-service:1.0
+$ docker pull yeahdy/users-service:1.0
 
 ## Docker image명 변경 (동일한 이미지ID를 가진 2개의 이미지가 생성됨)
 $ docker image tag {수정할 이미지명} {변경할 이미지명}
-$ docker image tag yy123/users-service:1.0 yeah/users-service:1.0
+$ docker image tag yy123/users-service:1.0 yeahdy/users-service:1.0
+```
+</br>
+
+### Docker 삭제 명령어
+
+```docker
 
 ## Docker image 삭제
 $ docker rmi {이미지명}
 ## 동일한 이미지ID가 여러개일 경우
 $ docker rmi -f 6d6b3dcfab72
+
+## 불필요한 리소스 삭제(중지된 컨테이너, 불필요한 네트워크, 이전단계의 이미지, 캐시)
+$ docker system prune
+
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all dangling images
+  - unused build cache
+
+Are you sure you want to continue? [y/N] Y
 ```
