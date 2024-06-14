@@ -66,7 +66,7 @@ ADD ../db_mount /var/lib/bookmarkdb
 
 EXPOSE 3306
 
-CMD ["bookmarkd"]
+CMD ["mysqld"]
 ```
 
 - 자체 DSL(Domain-Specific-language) 언어 사용
@@ -79,15 +79,18 @@ CMD ["bookmarkd"]
 </br>
 
 ## Docker 컨테이너 명령어
-```bash
+```docker
 $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG..]
 ```
+버전에 따라 이미지를 업로드하기 위해 `:16.02` 와 같이 태그(`:TAG`)를 붙인다. 이미지명은 중복될 수 없음
 
 **예시**
-```bash
+```docker
 $ docker run ubuntu:16.04
 $ docker run -d -p 13306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mariadb mariadb
 ```
+
+</br>
 
 | 옵션 | 설명 |
 | ----------- | ----------- |
@@ -103,7 +106,7 @@ $ docker run -d -p 13306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mariadb 
 
 </br>
 
-```bash
+```docker
 ## 도커 이미지 조회
 $ docker image ls
 $ docker images
@@ -130,7 +133,7 @@ $ docker container rm {f6a54f6e9fe9}
 
 ### 도커로 mariadb 컨테이너 접속하기
 
-```bash
+```docker
 ## 백그라운드 모드로 host 포트는 13306:docker 포트는 3306으로 mariadb에 컨테이너 생성+실행
 $ docker run -d -p 13306:3306 -e MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true --name my_mariadb mariadb
 
@@ -146,7 +149,7 @@ $ docker exec -it my_mariadb /bin/bash
 
 ### Dockerfile 을 통해 컨테이너 빌드하기
 
-```bash
+```docker
 ## 빌드하기 userID는 docker Hub 계정의 username과 일치하도록 한다.
 $ docker build -t {userID/컨테이너명:태그} .
 $ docker build -t yeahdy/users-service:1.0 .
@@ -154,7 +157,7 @@ $ docker build -t yeahdy/users-service:1.0 .
 
 ![7](https://github.com/yeahdy/spring-cloud-pratice/assets/86579541/2d73e4d0-3c72-456b-811c-5d9071874675)
 
-```bash
+```docker
 ## Docker Hub에 올리기
 $ docker push {이미지명}
 $ docker push yeahdy/users-service:1.0
@@ -166,9 +169,26 @@ $ docker pull yeahdy/users-service:1.0
 ## Docker image명 변경 (동일한 이미지ID를 가진 2개의 이미지가 생성됨)
 $ docker image tag {수정할 이미지명} {변경할 이미지명}
 $ docker image tag yy123/users-service:1.0 yeahdy/users-service:1.0
+```
+</br>
+
+### Docker 삭제 명령어
+
+```docker
 
 ## Docker image 삭제
 $ docker rmi {이미지명}
 ## 동일한 이미지ID가 여러개일 경우
 $ docker rmi -f 6d6b3dcfab72
+
+## 불필요한 리소스 삭제(중지된 컨테이너, 불필요한 네트워크, 이전단계의 이미지, 캐시)
+$ docker system prune
+
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all dangling images
+  - unused build cache
+
+Are you sure you want to continue? [y/N] Y
 ```
