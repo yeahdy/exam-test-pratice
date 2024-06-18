@@ -24,6 +24,9 @@ public class IssueCouponEntity {
     private Long id;
 
     @Column(nullable = false, updatable = false)
+    private String couponType;
+
+    @Column(nullable = false, updatable = false)
     private String couponId;
 
     @Column(nullable = false, updatable = false)
@@ -35,6 +38,7 @@ public class IssueCouponEntity {
 
     @Builder
     public IssueCouponEntity(String couponId, String userId) {
+        this.couponType = "RANDOM_COUPON";
         this.couponId = couponId;
         this.userId = userId;
     }

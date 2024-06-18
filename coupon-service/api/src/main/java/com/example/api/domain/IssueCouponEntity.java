@@ -23,6 +23,9 @@ public class IssueCouponEntity {
     private Long id;
 
     @Column(nullable = false, updatable = false)
+    private String couponType;
+
+    @Column(nullable = false, updatable = false)
     private String couponId;
 
     @Column(nullable = false, updatable = false)
