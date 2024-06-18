@@ -1,6 +1,7 @@
 package com.example.api.service;
 
 import com.example.api.producer.CouponCreateProducer;
+import com.example.api.repository.AppliedUserRepository;
 import com.example.api.repository.CouponCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,14 @@ import org.springframework.stereotype.Service;
 public class CouponApplyService {
     private final CouponCountRepository couponCountRepository;
     private final CouponCreateProducer couponCreateProducer;
+    private final AppliedUserRepository appliedUserRepository;
 
     public void apply(String userId){
+        Long appliedCoupon = appliedUserRepository.addCoupon(userId);
+        if(appliedCoupon != 1){
+            return;
+        }
+
         long count = couponCountRepository.increment();
         if(count > 100){
             return;

@@ -49,9 +49,34 @@ public class CouponApplyServiceTest {
             });
         }
         latch.await();
+        Thread.sleep(10000);
 
         long count = issueCouponRepository.count();
         assertThat(count).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("한명 당 하나의 쿠폰 발급하기")
+    public void apply_one_coupon_per_person_test() throws InterruptedException {
+        int threadCount = 1000;
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        for (int i = 0; i<threadCount; i++) {
+            String userId = "537af763-22a9-46b6-ba43-80a80e4bf7e5";
+            executorService.submit(() -> {
+                try{
+                    couponApplyService.apply(userId);
+                }finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        Thread.sleep(10000);
+
+        long count = issueCouponRepository.count();
+        assertThat(count).isEqualTo(1);
     }
 
 }
