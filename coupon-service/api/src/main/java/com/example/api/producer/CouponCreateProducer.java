@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CouponCreateProducer {
 
-    private final KafkaTemplate<String, Long> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void createCoupon(Long userId){
+    public void createCoupon(String userId){
         kafkaTemplate.send("coupon-create", userId);
     }
 

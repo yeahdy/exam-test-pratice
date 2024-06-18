@@ -2,7 +2,7 @@ package com.example.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.api.repository.CouponRepository;
+import com.example.api.repository.IssueCouponRepository;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,21 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApplyServiceTest {
+public class CouponApplyServiceTest {
 
     @Autowired
-    private ApplyService applyService;
+    private CouponApplyService couponApplyService;
 
     @Autowired
-    private CouponRepository couponRepository;
+    private IssueCouponRepository issueCouponRepository;
 
     @Test
     @DisplayName("쿠폰 한번만 응모하기")
     public void apply_one_coupon_test(){
         //given
-        applyService.apply(1L);
+        couponApplyService.apply("4b757d25-1ef6-469e-824c-8540b474046d");
         //when
-        long count = couponRepository.count();
+        long count = issueCouponRepository.count();
         //then
         assertThat(count).isEqualTo(1);
     }
@@ -39,10 +39,10 @@ public class ApplyServiceTest {
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for (int i = 0; i<threadCount; i++) {
-            long userId = i;
+            String userId = "4b757d25-1ef6-469e-824c-8540b474046d" + i;
             executorService.submit(() -> {
                 try{
-                    applyService.apply(userId);
+                    couponApplyService.apply(userId);
                 }finally {
                     latch.countDown();
                 }
@@ -50,7 +50,7 @@ public class ApplyServiceTest {
         }
         latch.await();
 
-        long count = couponRepository.count();
+        long count = issueCouponRepository.count();
         assertThat(count).isEqualTo(100);
     }
 
