@@ -30,7 +30,7 @@ public class WebSecurity {
     private final MyRefreshListener refreshListener;
 
     public static final String ALLOWED_IP_ADDRESS = "127.0.0.1";
-    public static final String SUBNET = "/32";
+    public static final String SUBNET = "/16";
     public static final IpAddressMatcher ALLOWED_IP_ADDRESS_MATCHER = new IpAddressMatcher(ALLOWED_IP_ADDRESS + SUBNET);
 
     @Bean
@@ -42,7 +42,7 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers("/**").access(
-                                new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1')"))
+                                new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') or hasIpAddress('apigateway-service')"))
                         .anyRequest().authenticated()
                 ).authenticationManager(authenticationManager)
                 .csrf(AbstractHttpConfigurer::disable);
@@ -63,8 +63,7 @@ public class WebSecurity {
         return new AuthenticationFilter(authenticationManager, userService, refreshListener);
     }
 
-    private AuthorizationDecision hasIpAddress(Supplier<Authentication> authentication,
-                                               RequestAuthorizationContext object) {
+    private AuthorizationDecision hasIpAddress(RequestAuthorizationContext object) {
         return new AuthorizationDecision(ALLOWED_IP_ADDRESS_MATCHER.matches(object.getRequest()));
     }
 
