@@ -27,7 +27,7 @@ $ docker network create --driver bridge bookmark-network
 
 ```docker
 $ docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 bookmark-network
-29f3604b61d2a0d9d7c8d0ed782de452d2fc950244dda8bd6042c49dca67a0
+29f3604b610d9d7c8d0ed782de52d2fc9502da8bd604c42c49dca7a0
 ```
 
 - **--gateway 와 --subnet 수동 IP 할당한 이유?**</br>
@@ -39,7 +39,7 @@ $ docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 bookmark-net
 ## network 조회
 $ docker network ls
 NETWORK ID     NAME               DRIVER    SCOPE
-29f3604b61d2   bookmark-network   bridge    local
+29f3604a62c3   bookmark-network   bridge    local
 21d40a870b17   bridge             bridge    local 
 391674bbd35f   host               host      local
 f775046a522d   none               null      local
@@ -48,8 +48,8 @@ f775046a522d   none               null      local
 $ docker network inspect bookmark-network
 [
     {
-        "Name": "**bookmark-network**",
-        "Id": "29f3604b61d2a0d9d7c8d0ed782de452d2fc950244dda8bd604c42c49dca67a0",
+        "Name": "bookmark-network",
+        "Id": "29f3604b610d9d7c8d0ed782de52d2fc9502da8bd604c42c49dca7a0",
         "Created": "2024-06-13T05:02:00.948472848Z",
         "Scope": "local",
         "Driver": "bridge",
@@ -111,4 +111,48 @@ $ docker run -d --name rabbitmq --network bookmark-network -p 15672:15672 -p 567
 
 ```docker
 $ docker run -d -p 8888:8888 --network bookmark-network -e "spring.rabbitmq.host=rabbitmq" -e "spring.profiles.active=default" --name config-service yeahdy/config-service:1.0
+```
+
+**Discovery-service 컨테이너 생성&기동**
+
+```docker
+$ docker run -d -p 8761:8761 --network bookmark-network -e "spring.cloud.config.uri=http://config-service:8888" --name discovery-service yeahdy/discoveryservice:1.0
+```
+
+**Api-Gateway 컨테이너 생성&기동**
+
+```docker
+$ docker run -d -p 8000:8000 --network bookmark-network -e "spring.cloud.config.uri=http://config-service:8888" -e "spring.rabbitmq.host=rabbitmq" -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" --name apigateway-service yeahdy/apigateway-service:1.0
+```
+
+**MariaDB 컨테이너 생성&기동**
+
+```docker
+$ docker run -d -p 3307:3307 --network bookmark-network --name bookmark_db yeahdy/bookmark_db:1.0
+```
+
+**Kafka 컨테이너 생성&기동**
+
+```docker
+$ docker-compose -f docker-compose-single-broker.yml up -d
+```
+
+**Zipkin 컨테이너 생성&기동**
+
+```docker
+$ docker run -d -p 9411:9411 --network bookmark-network --name zipkin openzipkin/zipkin
+```
+
+**Monitoring- prometheus 컨테이너 생성&기동**
+
+볼륨마운트를 위해 공유폴더인 `prometheus.yml` 파일이 있는 경로에서 기동
+
+```docker
+$ docker run -d -p 9090:9090 --network bookmark-network --name prometheus -v .\prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+```
+
+**Monitoring- gragana 컨테이너 생성&기동**
+
+```docker
+$ docker run -d -p 3000:3000 --network bookmark-network --name grafana grafana/grafana 
 ```
