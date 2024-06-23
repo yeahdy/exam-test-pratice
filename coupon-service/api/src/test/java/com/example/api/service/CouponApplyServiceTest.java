@@ -22,9 +22,10 @@ public class CouponApplyServiceTest {
 
     @Test
     @DisplayName("쿠폰 한번만 응모하기")
-    public void apply_one_coupon_test(){
+    public void apply_one_coupon_test() throws InterruptedException {
         //given
-        couponApplyService.apply("4b757d25-1ef6-469e-824c-8540b474046d");
+        couponApplyService.apply("537af763-22a9-46b6-ba43-80a80e4bf7e5");
+        Thread.sleep(5000);
         //when
         long count = issueCouponRepository.count();
         //then

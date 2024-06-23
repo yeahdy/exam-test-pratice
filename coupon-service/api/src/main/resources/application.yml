@@ -1,10 +1,28 @@
+server:
+  port: 0
+
 spring:
+  config:
+    name: coupon-service
+  application:
+    name: coupon-service
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://0.0.0.0:3307/bookmark
     username: root
     password: Daily12!@
+
+# eureka
+eureka:
+  instance:
+    ## spring.cloud.client.hostname 사용 시 io address가 들어옴
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
