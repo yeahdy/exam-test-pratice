@@ -6,6 +6,13 @@ spring:
     name: coupon-service
   application:
     name: coupon-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: adminyj
+      password: test12!@
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,6 +22,7 @@ spring:
     url: jdbc:mariadb://0.0.0.0:3307/bookmark
     username: root
     password: Daily12!@
+
 
 # eureka
 eureka:
@@ -26,3 +34,9 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
