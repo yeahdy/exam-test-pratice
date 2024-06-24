@@ -13,7 +13,7 @@ public class CouponValidationConsumer {
 
     private final FailedCouponEventRepository failedCouponEventRepository;
 
-    @KafkaListener(topics = "reply-coupon", groupId = "coupon-group",
+    @KafkaListener(topics = "${spring.kafka.topics.coupon-to-coupon}", groupId = "coupon-group",
             containerFactory = "issueCouponFactory", errorHandler = "validationErrorHandler")
     public void replyIssueCouponListener(String userId, Acknowledgment acknowledgment){
         //TODO. 쿠폰 재발급 로직 추가
