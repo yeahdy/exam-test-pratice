@@ -16,6 +16,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    format_sql: true
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -23,11 +24,9 @@ spring:
     username: root
     password: Daily12!@
 
-
 # eureka
 eureka:
   instance:
-    ## spring.cloud.client.hostname 사용 시 io address가 들어옴
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     register-with-eureka: true
@@ -40,3 +39,14 @@ management:
     web:
       exposure:
         include: health, busrefresh
+
+  #zipkin
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
