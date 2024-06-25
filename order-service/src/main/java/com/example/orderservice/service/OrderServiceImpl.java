@@ -1,8 +1,8 @@
 package com.example.orderservice.service;
 
 import com.example.orderservice.dto.OrderDto;
-import com.example.orderservice.jpa.OrderEntity;
-import com.example.orderservice.jpa.OrderRepository;
+import com.example.orderservice.domain.OrderEntity;
+import com.example.orderservice.repository.OrderRepository;
 import com.example.orderservice.vo.ResponseOrder;
 import java.util.ArrayList;
 import java.util.List;
