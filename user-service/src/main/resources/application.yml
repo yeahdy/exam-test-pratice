@@ -14,7 +14,8 @@ spring:
       password: test12!@
   jpa:
     database: mysql
-    hibernate.ddl-auto: update
+    hibernate:
+      ddl-auto: update
     format_sql: true
     show-sql: true
 
