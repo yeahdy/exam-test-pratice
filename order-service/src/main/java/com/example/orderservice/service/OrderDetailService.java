@@ -6,4 +6,6 @@ public interface OrderDetailService {
 
     OrderDetailDto createOrderDetail(OrderDetailDto orderDetailDto);
 
+    void updateOrderDetail(Long orderId, OrderDetailDto orderDetailDto);
+
 }
