@@ -15,6 +15,8 @@ spring:
     properties:
       hibernate:
         auto_quote_keyword: true
+        format_sql: true
+    show-sql: true
 
 eureka:
   instance:
@@ -28,6 +30,11 @@ eureka:
 logging:
   level:
     com.example.orderservice: DEBUG
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
 
