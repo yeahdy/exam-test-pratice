@@ -21,11 +21,13 @@ public class OrderDetailRepositoryTest {
     void update_order_detail_test() {
         String name = "ellie";
 
-        //find를 통해 조회 했기 때문에 이미 영속화된 상태
+        System.out.println("##############findById##############");
         OrderDetailEntity orderDetailEntity = orderDetailRepository.findById(1L).orElse(null);
         orderDetailEntity.setName(name);
+//        System.out.println("##############save##############");
 //        orderDetailRepository.save(orderDetailEntity);
 
+        System.out.println("##############findAll##############");
         OrderDetailEntity changedOrderDetailEntity = orderDetailRepository.findAll().get(0);
         assertThat(changedOrderDetailEntity.getName()).isEqualTo(name);
     }

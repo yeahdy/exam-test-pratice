@@ -23,9 +23,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow(
                 () -> new EntityNotFoundException(String.format("%d Not found", orderId))
         );
-
         OrderDetailEntity orderDetailEntity = orderEntity.getOrderDetailEntity();   // N+1 문제 발생x Join으로 가져옴
-//        OrderDetailEntity orderDetailEntity = orderDetailRepository.findByOrder(orderEntity);
         orderDetailEntity.updateOrderDetail(
                 orderDetailDto.getName(),
                 orderDetailDto.getPhoneNumber(),
