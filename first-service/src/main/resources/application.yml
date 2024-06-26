@@ -5,6 +5,17 @@ spring:
   application:
     name: my-first-service
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    format_sql: true
+    show-sql: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://0.0.0.0:3307/bookmark
+    username: root
+    password: Daily12!@
+
 eureka:
   client:
     register-with-eureka: true
