@@ -30,6 +30,6 @@ public class FailedExamEntity {
     private String studentName;
 
     @Column(name = "AVG_SCORE", nullable = false)
-    private String avgScore;
+    private Double avgScore;
 
 }
