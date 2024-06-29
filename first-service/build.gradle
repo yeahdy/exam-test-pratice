@@ -24,7 +24,7 @@ dependencies {
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-
+    testImplementation 'org.mockito:mockito-core:5.11.0'
 }
 
 group = 'com.example'
@@ -46,4 +46,8 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
 }
