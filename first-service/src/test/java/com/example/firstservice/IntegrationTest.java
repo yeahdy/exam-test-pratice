@@ -40,7 +40,7 @@ public class IntegrationTest {
         rdbms.start();
     }
 
-    //테스트가 동작할때 application.yaml 파일을 초기화
+    //컨텍스트 초기화를 통해 테스트가 동작할때 application.yaml 파일을 초기화
     static class IntegrationTestInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
