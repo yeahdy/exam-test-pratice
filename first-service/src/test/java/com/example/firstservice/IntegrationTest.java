@@ -1,5 +1,6 @@
 package com.example.firstservice;
 
+import com.redis.testcontainers.RedisContainer;
 import jakarta.transaction.Transactional;
 import java.io.File;
 import java.time.Duration;
@@ -21,6 +22,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 public class IntegrationTest {
 
     static DockerComposeContainer rdbms;
+    static RedisContainer redis;
 
     static {
         rdbms = new DockerComposeContainer(new File("infra/test/docker-compose.yaml"))
@@ -36,8 +38,10 @@ public class IntegrationTest {
                         Wait.forLogMessage("(.*Successfully applied.*)|(.*Successfully validated.*)",1)
                                 .withStartupTimeout(Duration.ofSeconds(300))
                 );
-
         rdbms.start();
+
+        redis = new RedisContainer(RedisContainer.DEFAULT_IMAGE_NAME.withTag("6"));
+        redis.start();
     }
 
     //컨텍스트 초기화를 통해 테스트가 동작할때 application.yaml 파일을 초기화
@@ -52,6 +56,13 @@ public class IntegrationTest {
 
             //database url을 동적으로 설정해서 테스트용 DB로 연결
             properties.put("spring.datasource.url", "jdbc:mysql://"+rdbmsHost+":"+rdbmsPort+"/score");
+
+            //docker redis에 올라간 정보가져오기
+            var redisHost = redis.getHost();
+            var redisPort = redis.getFirstMappedPort();
+            properties.put("spring.data.redis.host", redisHost);
+            properties.put("spring.data.redis.port", redisPort.toString());
+
             TestPropertyValues.of(properties)
                     .applyTo(applicationContext);
         }

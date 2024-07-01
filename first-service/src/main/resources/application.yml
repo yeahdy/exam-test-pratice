@@ -4,7 +4,7 @@ server:
 spring:
   application:
     name: my-first-service
-
+  #jpa
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,11 +13,17 @@ spring:
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQLDialect
+  #db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/score
     username: root
     password: password
+  #redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 eureka:
   client:
