@@ -1,15 +1,14 @@
-package com.example.firstservice.service;
+package com.example.firstservice.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.firstservice.IntegrationTest;
 import com.example.firstservice.model.StudentScoreData;
-import com.example.firstservice.repository.StudentScoreRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class StudentScoreServiceIntegration extends IntegrationTest {
+public class StudentScoreRepositoryIntegrationTest extends IntegrationTest {
 
     @Autowired
     private StudentScoreRepository studentScoreRepository;
@@ -19,16 +18,19 @@ public class StudentScoreServiceIntegration extends IntegrationTest {
 
     @Test
     void student_score_service_integration_test(){
+        //given
         var studentScoreEntity = StudentScoreData.passedFixture();
-        var savedStudentScore = studentScoreRepository.save(studentScoreEntity);
 
+        //when
+        var savedStudentScore = studentScoreRepository.save(studentScoreEntity);
         entityManager.flush();
         entityManager.clear();
 
+        //then
         var studentScore = studentScoreRepository.findById(1L).orElseThrow();
-        assertThat(savedStudentScore.getId()).isEqualTo(studentScore.getId());
-        assertThat(savedStudentScore.getExam()).isEqualTo(studentScore.getExam());
-        assertThat(savedStudentScore.getStudentName()).isEqualTo(studentScore.getStudentName());
+        assertThat(studentScore.getId()).isEqualTo(savedStudentScore.getId());
+        assertThat(studentScore.getExam()).isEqualTo(savedStudentScore.getExam());
+        assertThat(studentScore.getStudentName()).isEqualTo(savedStudentScore.getStudentName());
     }
 
 }

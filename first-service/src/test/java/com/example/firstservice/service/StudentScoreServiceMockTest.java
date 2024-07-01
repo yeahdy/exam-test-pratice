@@ -10,7 +10,6 @@ import com.example.firstservice.model.StudentScoreData;
 import com.example.firstservice.repository.FailedExamRepository;
 import com.example.firstservice.repository.PassedExamRepository;
 import com.example.firstservice.repository.StudentScoreRepository;
-import com.example.firstservice.utils.MyCalculator;
 import com.example.firstservice.vo.response.ResponseFailedExamStudent;
 import com.example.firstservice.vo.response.ResponsePassedExamStudent;
 import java.util.List;
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class StudentScoreServiceTest {
+public class StudentScoreServiceMockTest {
 
     private StudentScoreService studentScoreService;
     private StudentScoreRepository studentScoreRepository;
