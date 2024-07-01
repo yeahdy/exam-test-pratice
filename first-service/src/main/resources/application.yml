@@ -35,3 +35,6 @@ eureka:
 #  instance:
 #    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
 #    prefer-ip-address: true
+
+aws:
+  endpoint: localhost:4566

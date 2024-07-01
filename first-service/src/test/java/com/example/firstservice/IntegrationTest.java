@@ -14,7 +14,10 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.containers.localstack.LocalStackContainer.Service;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.utility.DockerImageName;
 
 @Tag("IntegrationTest")
 @SpringBootTest
@@ -25,6 +28,7 @@ public class IntegrationTest {
 
     static DockerComposeContainer rdbms;
     static RedisContainer redis;
+    static LocalStackContainer aws;
 
     static {
         rdbms = new DockerComposeContainer(new File("infra/test/docker-compose.yaml"))
@@ -44,6 +48,11 @@ public class IntegrationTest {
 
         redis = new RedisContainer(RedisContainer.DEFAULT_IMAGE_NAME.withTag("6"));
         redis.start();
+
+        aws = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.11.2"))
+                .withServices(LocalStackContainer.Service.S3)
+                .withStartupTimeout(Duration.ofSeconds(600));
+        aws.start();
     }
 
     //컨텍스트 초기화를 통해 테스트가 동작할때 application.yaml 파일을 초기화
@@ -65,8 +74,24 @@ public class IntegrationTest {
             properties.put("spring.data.redis.host", redisHost);
             properties.put("spring.data.redis.port", redisPort.toString());
 
+            //localStack을 통해 asw bucket 생성
+            try{
+                aws.execInContainer(
+                        "awslocal",
+                        "s3api",
+                        "create-bucket",
+                        "--bucket",
+                        "instruction-bucket"
+                );
+
+                properties.put("aws.endpoint", aws.getEndpoint().toString());
+            }catch (Exception e){
+                //ignore
+            }
+
             TestPropertyValues.of(properties)
                     .applyTo(applicationContext);
         }
     }
+
 }
