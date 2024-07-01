@@ -27,7 +27,7 @@ public class StudentScoreRepositoryIntegrationTest extends IntegrationTest {
         entityManager.clear();
 
         //then
-        var studentScore = studentScoreRepository.findById(1L).orElseThrow();
+        var studentScore = studentScoreRepository.findById(savedStudentScore.getId()).orElseThrow();
         assertThat(studentScore.getId()).isEqualTo(savedStudentScore.getId());
         assertThat(studentScore.getExam()).isEqualTo(savedStudentScore.getExam());
         assertThat(studentScore.getStudentName()).isEqualTo(savedStudentScore.getStudentName());

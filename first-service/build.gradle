@@ -58,3 +58,9 @@ tasks.withType(Javadoc) {
 test {
     useJUnitPlatform()
 }
+
+task integrationTest(type: Test) {
+    useJUnitPlatform{
+        includeTags 'IntegrationTest'
+    }
+}
