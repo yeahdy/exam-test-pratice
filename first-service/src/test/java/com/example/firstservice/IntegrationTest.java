@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer.Service;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -29,6 +30,7 @@ public class IntegrationTest {
     static DockerComposeContainer rdbms;
     static RedisContainer redis;
     static LocalStackContainer aws;
+    static KafkaContainer kafka;
 
     static {
         rdbms = new DockerComposeContainer(new File("infra/test/docker-compose.yaml"))
@@ -53,6 +55,10 @@ public class IntegrationTest {
                 .withServices(LocalStackContainer.Service.S3)
                 .withStartupTimeout(Duration.ofSeconds(600));
         aws.start();
+
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"))
+                .withKraft();
+        kafka.start();
     }
 
     //컨텍스트 초기화를 통해 테스트가 동작할때 application.yaml 파일을 초기화
@@ -88,6 +94,8 @@ public class IntegrationTest {
             }catch (Exception e){
                 //ignore
             }
+
+            properties.put("spring.kafka.bootstrap-servers", kafka.getBootstrapServers());
 
             TestPropertyValues.of(properties)
                     .applyTo(applicationContext);
