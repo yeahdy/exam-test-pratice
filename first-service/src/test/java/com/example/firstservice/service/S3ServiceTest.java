@@ -13,25 +13,23 @@ import org.springframework.core.io.ClassPathResource;
 
 public class S3ServiceTest extends IntegrationTest {
 
-    @Autowired
-    private S3Service s3Service;
+  @Autowired private S3Service s3Service;
 
-    @Test
-    public void s3PutAndGetTest() throws Exception {
-        //given
-        String bucket = "instruction-bucket";
-        String key = "instruction.txt";
-        File originalFile = new ClassPathResource("static/localStackInstruction.txt").getFile();
+  @Test
+  public void s3PutAndGetTest() throws Exception {
+    // given
+    String bucket = "instruction-bucket";
+    String key = "instruction.txt";
+    File originalFile = new ClassPathResource("static/localStackInstruction.txt").getFile();
 
-        //when
-        s3Service.putFile(bucket,key,originalFile);
+    // when
+    s3Service.putFile(bucket, key, originalFile);
 
-        //then
-        File resultFile =  s3Service.getFile(bucket,key);
-        List<String> originalFileLines = FileUtils.readLines(originalFile, StandardCharsets.UTF_8);
-        List<String> resultFileLines = FileUtils.readLines(resultFile, StandardCharsets.UTF_8);
+    // then
+    File resultFile = s3Service.getFile(bucket, key);
+    List<String> originalFileLines = FileUtils.readLines(originalFile, StandardCharsets.UTF_8);
+    List<String> resultFileLines = FileUtils.readLines(resultFile, StandardCharsets.UTF_8);
 
-        assertThat(resultFileLines).isEqualTo(originalFileLines);
-    }
-
+    assertThat(resultFileLines).isEqualTo(originalFileLines);
+  }
 }

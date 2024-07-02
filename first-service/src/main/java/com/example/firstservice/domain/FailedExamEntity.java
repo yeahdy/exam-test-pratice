@@ -16,20 +16,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @Entity
-@Table(name="FAILED_EXAM")
+@Table(name = "FAILED_EXAM")
 public class FailedExamEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "EXAM", nullable = false)
-    private String exam;
+  @Column(name = "EXAM", nullable = false)
+  private String exam;
 
-    @Column(name = "STUDENT_NAME", nullable = false)
-    private String studentName;
+  @Column(name = "STUDENT_NAME", nullable = false)
+  private String studentName;
 
-    @Column(name = "AVG_SCORE", nullable = false)
-    private Double avgScore;
-
+  @Column(name = "AVG_SCORE", nullable = false)
+  private Double avgScore;
 }

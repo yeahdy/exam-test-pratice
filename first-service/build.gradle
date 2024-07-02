@@ -6,6 +6,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'jacoco'
+    id 'com.diffplug.spotless' version '6.21.0'
 }
 
 repositories {
@@ -127,5 +128,15 @@ tasks.jacocoTestCoverageVerification {
                     "com.example.firstservice.FirstServiceApplication"
             )
         }
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }

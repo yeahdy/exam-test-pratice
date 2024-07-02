@@ -11,17 +11,15 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaConsumer {
 
-    private final KafkaConsumerService kafkaConsumerService;
+  private final KafkaConsumerService kafkaConsumerService;
 
-    @Bean
-    public NewTopic topic(){
-        return TopicBuilder.name("score-topic")
-                .build();
-    }
+  @Bean
+  public NewTopic topic() {
+    return TopicBuilder.name("score-topic").build();
+  }
 
-    @KafkaListener(id = "score-id", topics = "score-topic")
-    public void listen(String message){
-        kafkaConsumerService.process(message);
-    }
-
+  @KafkaListener(id = "score-id", topics = "score-topic")
+  public void listen(String message) {
+    kafkaConsumerService.process(message);
+  }
 }

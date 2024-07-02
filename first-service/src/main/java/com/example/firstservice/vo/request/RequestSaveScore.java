@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestSaveScore {
-    private String studentName;
-    private Integer korScore;
-    private Integer englishScore;
-    private Integer mathScore;
+  private String studentName;
+  private Integer korScore;
+  private Integer englishScore;
+  private Integer mathScore;
 
-    public StudentScoreDto toDto(String exam){
-        return new StudentScoreDto(exam,studentName,korScore,englishScore,mathScore);
-    }
+  public StudentScoreDto toDto(String exam) {
+    return new StudentScoreDto(exam, studentName, korScore, englishScore, mathScore);
+  }
 }
