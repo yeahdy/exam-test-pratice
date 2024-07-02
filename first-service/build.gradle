@@ -5,6 +5,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'jacoco'
 }
 
 repositories {
@@ -68,10 +69,63 @@ tasks.withType(Javadoc) {
 
 test {
     useJUnitPlatform()
+
+    jacoco {}
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 task integrationTest(type: Test) {
     useJUnitPlatform{
         includeTags 'IntegrationTest'
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+tasks.jacocoTestReport {
+    reports{
+        xml.required = true
+        html.required = true
+        csv.required = false
+
+        xml.destination(file("build/jacoco/jacoco.xml"))
+        html.destination(file("build/jacoco/jacoco.html"))
+    }
+
+    //jacoco 테스트 후 실행
+    finalizedBy(tasks.jacocoTestCoverageVerification)
+}
+
+// 테스트 커버리지 검증에 따른 jacoco 테스트 성공/실패 여부
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = "CLASS"   //class 별로 검사
+
+            // 테스트 코드 커버 비율 설정 (50% 이상일 경우에만 jacoco의 테스트 성공)
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = BigDecimal.valueOf(0.5)
+            }
+
+            //class 당 코드 전체 라인이 최대 100 줄까지 가능
+            limit {
+                counter = "LINE"
+                value = "TOTALCOUNT"
+                maximum = BigDecimal.valueOf(100)
+            }
+
+            excludes = List.of(
+                    "*.controller.*",
+                    "*.vo.*",
+                    "*.exception.*",
+                    "com.example.firstservice.messagequeue.KafkaConsumerService",
+                    "com.example.firstservice.FirstServiceApplication"
+            )
+        }
     }
 }
