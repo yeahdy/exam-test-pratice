@@ -6,12 +6,16 @@ import com.example.firstservice.IntegrationTest;
 import com.example.firstservice.messagequeue.KafkaConsumerService;
 import com.example.firstservice.messagequeue.KafkaProducerService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 
+@Order(0)
+@DirtiesContext
 public class KafkaConsumerTest extends IntegrationTest {
     // infra 계층의 코드는 testcontainer를 통해 실제로 검증을 하고, KafkaConsumerService 는 서비스 계층으로 모킹을 통해 테스트
     @Autowired
