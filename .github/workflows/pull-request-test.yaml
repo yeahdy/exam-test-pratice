@@ -30,6 +30,7 @@ jobs:
         run: |  #병렬로 동작
           chmod +x first-service/gradlew
           cd first-service
+          ./gradlew :spotlessApply
           ./gradlew build --parallel
 
       - name: Coverage Report
