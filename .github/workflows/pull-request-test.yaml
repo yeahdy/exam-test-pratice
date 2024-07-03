@@ -41,6 +41,6 @@ jobs:
           update-comment: true
           min-coverage-overall: 10
           min-coverage-changed-files: 10
-          # github pr 에 jacoco 리포트를 코멘트로 남겨줌
+          # github pr에 jacoco 리포트를 코멘트로 남겨줌(** 모든 하위디렉토리 조회)
           paths: |
             ${{ github.workspace }}/**/build/jacoco/jacoco.xml
