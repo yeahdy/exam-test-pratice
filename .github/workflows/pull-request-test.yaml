@@ -32,10 +32,11 @@ jobs:
           ./gradlew build --parallel
 
       - name: Coverage Report
+        if: steps.changes.outputs.application == 'true'
         uses: madrapps/jacoco-report@v1.6.1
         with:
-          token: ${{ secretes.GITHUB_TOKEN }}
-          title: Code Coverage Report
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Code Coverage
           update-comment: true
           min-coverage-overall: 10
           min-coverage-changed-files: 10
