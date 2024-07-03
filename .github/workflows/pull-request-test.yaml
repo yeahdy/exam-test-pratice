@@ -28,6 +28,7 @@ jobs:
 
       - name: Gradle Build
         run: |  #병렬로 동작
+          chmod +x first-service/gradlew
           cd first-service
           ./gradlew build --parallel
 
