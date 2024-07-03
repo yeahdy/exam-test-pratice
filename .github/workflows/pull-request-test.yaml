@@ -24,8 +24,8 @@ jobs:
         with:
           filters: |
             application:
-              - 'build.gradle'
-              - 'src/**'
+              - '**/build.gradle'
+              - '**/src/**'
       
       - name: JDK 설치
         if: steps.changes.outputs.application == 'true'
