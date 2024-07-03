@@ -32,10 +32,10 @@ jobs:
           cd first-service
           ./gradlew :spotlessApply
           ./gradlew build --parallel
-          echo "::set-output name=application::true"
+          echo "Gradle Build is true" >> $GITHUB_STATE
 
       - name: Coverage Report
-        if: steps.changes.outputs.application == 'true'
+        # if: steps.changes.outputs.application == 'true'
         uses: madrapps/jacoco-report@v1.6.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
