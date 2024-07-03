@@ -31,7 +31,7 @@ jobs:
           cd first-service
           ./gradlew build --parallel
 
-            - name: Coverage Report
+      - name: Coverage Report
         uses: madrapps/jacoco-report@v1.6.1
         with:
           token: ${{ secretes.GITHUB_TOKEN }}
