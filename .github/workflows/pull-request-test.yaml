@@ -83,4 +83,5 @@ jobs:
         run: |
           chmod +x first-service/gradlew
           cd first-service
+          ./gradlew :spotlessApply
           ./gradlew spotlessCheck
