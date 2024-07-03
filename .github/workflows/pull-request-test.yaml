@@ -36,7 +36,6 @@ jobs:
 
       - name: Coverage Report
         if: steps.changes.outputs.application == 'true'
-        run: echo "Coverage Report is running"
         uses: madrapps/jacoco-report@v1.6.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
