@@ -38,8 +38,8 @@ jobs:
       - name: Gradle Build
         if: steps.changes.outputs.application == 'true'
         run: |  #병렬로 동작
-          chmod +x first-service/gradlew
-          cd first-service
+          chmod +x exam-service/gradlew
+          cd exam-service
           ./gradlew :spotlessApply
           ./gradlew build --parallel
 
@@ -81,7 +81,7 @@ jobs:
       - name: Style Check
         if: steps.changes.outputs.application == 'true'
         run: |
-          chmod +x first-service/gradlew
-          cd first-service
+          chmod +x exam-service/gradlew
+          cd exam-service
           ./gradlew :spotlessApply
           ./gradlew spotlessCheck
